@@ -20,11 +20,11 @@ app.get('/api/notes', (req, res) => {                                 // WHEN th
   return res.sendFile(path.join(__dirname, './db/db.json'));          // THEN the notes database will be displayed
 });
 
-app.post('/api/notes', (req, res) => {                                                        // WHEN the POST request is called at /api/notes
-  const { title, text } = req.body;                                                           // THEN the information within the requests body is destructured
+app.post('/api/notes', (req, res) => {                                                      // WHEN the POST request is called at /api/notes
+  const { title, text } = req.body;                                                         // THEN the information within the requests body is destructured
 
-  if (title && text) {                                                                        // IF the request contains a note title and note text
-    fs.readFile(path.join(__dirname, './db/db.json'), 'utf-8', (err, data) => {         // THEN the notes database will be read
+  if (title && text) {                                                                          // IF the request contains a note title and note text
+    fs.readFile(path.join(__dirname, './db/db.json'), 'utf-8', (err, data) => {                 // THEN the notes database will be read
       if(err) {                                                                                 // IF there is an error reading the file
         console.log('There was trouble reaching your notes. Please try again.')                 // THEN the user will be prompted to try again
       } else {                                                                                  // IF there are no errors
@@ -40,18 +40,18 @@ app.post('/api/notes', (req, res) => {                                          
         notes.push(newNote);                                                                    // THEN the new note is added to the notes array
 
         fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notes), (err) => {    // THEN the database file is written to
-          if (err) {                                                                            // IF there is an error
-            console.log('there was an error adding the note');                                  // THEN the user will be alerted that there was an error
-          } else {                                                                              // IF there are no errors
-            console.log('A new note has been added!');                                          // THEN the user will be alerted that a note was added
+          if (err) {                                                                                // IF there is an error
+            console.log('there was an error adding the note');                                      // THEN the user will be alerted that there was an error
+          } else {                                                                                  // IF there are no errors
+            console.log('A new note has been added!');                                              // THEN the user will be alerted that a note was added
           }  
         });
     
         return res.json(newNote);                                                               // THEN the response is returned
       };
     });
-  } else {                                                                                    // IF the request does not contain a note title and note text
-    console.log('Please enter a note title and description.');                                // THEN the user will be asked to enter a title and description
+  } else {                                                                                  // IF the request does not contain a note title and note text
+    console.log('Please enter a note title and description.');                              // THEN the user will be asked to enter a title and description
   };
 });
 
