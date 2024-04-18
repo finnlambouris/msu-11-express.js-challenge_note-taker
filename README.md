@@ -6,8 +6,8 @@ I WANT to be able to write and save notes<br>
 SO THAT I can organize my thoughts and keep track of tasks I need to complete
 
 ## Deployed Application
-[Deployed Application Link]()
-![Deployed Application]()
+[Deployed Application Link](https://msu-11-note-taker-539d1e0095e5.herokuapp.com/)
+![Deployed Application](./public/assets/img/deployedApplication.png)
 
 ## Installation
 Node.js is needed to be able to run this code in the terminal.
