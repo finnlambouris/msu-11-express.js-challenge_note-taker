@@ -25,28 +25,55 @@ app.post('/api/notes', (req, res) => {
 
   if (title && text) {
     fs.readFile(path.join(__dirname, './db/db.json'), 'utf-8', (err, data) => {
-      err ? console.log('trouble reading the file') : console.log(data);
-      
-      let notes = JSON.parse(data);
+      if(err) {
+        console.log('There was trouble reaching your notes. Please try again.')
+      } else {
+        let notes = JSON.parse(data);
 
-      // Variable for the object we will save
-      const newNote = {
-        title: title,
-        text: text,
-        id: uuid.v1()
+        // Variable for the object we will save
+        const newNote = {
+          title: title,
+          text: text,
+          id: uuid.v1()
+        };
+
+        notes.push(newNote);
+
+        fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notes), (err) => {
+          err ? console.log('there was an error adding the note') : console.log('A new note has been added!');
+        });
+    
+        return res.json(newNote);
       };
+    });
+  } else {
+    console.log('Please enter a note title and description.');
+  };
+});
 
-      notes.push(newNote);
+app.delete('/api/notes/:id', (req, res) => {
+  const id = req.params.id;
+
+  fs.readFile(path.join(__dirname, './db/db.json'), 'utf-8', (err, data) => {
+    if (err) {
+      console.log('There was trouble reaching your notes. Please try again.')
+    } else {
+      let notes = JSON.parse(data);
+      console.log(req.params.id);
+
+      for (i = 0; i < notes.length; i++) {
+        if (notes[i].id === req.params.id) {
+          notes.splice(i, 1);
+        }
+      }
 
       fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notes), (err) => {
-        err ? console.log('there was an error adding the note') : console.log('A new note has been added!');
+        err ? console.log('there was an error removing the note') : console.log('A note has been removed!');
       });
-  
-      return res.json(newNote);
-    })
-  } else {
-    return res.send(err);
-  }
+
+      return res.json(notes);
+    }
+  });
 });
 
 app.get('*', (req, res) => {
@@ -56,5 +83,5 @@ app.get('*', (req, res) => {
 // app listener
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`your app is running at https://localhost:${PORT}`);
+  console.log(`your app is running at http://localhost:${PORT}`);
 });
